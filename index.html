@@ -4,124 +4,178 @@
   <meta charset="UTF-8">
   <title>Educational Agent</title>
 
-  <!-- Bootstrap -->
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f8f9fa;
+      background: #f4f6fb;
     }
 
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- HERO ---------- */
     .hero {
-      background: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1600&q=80')
-        no-repeat center center/cover;
-      position: relative;
+      background: linear-gradient(135deg, rgba(0,0,0,.7), rgba(13,110,253,.6)),
+      url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1600&q=80') center/cover;
       color: white;
-      text-align: center;
       padding: 120px 20px;
+      text-align: center;
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
+    /* ---------- STATS ---------- */
+    .stat-card {
+      background: linear-gradient(135deg, #0d6efd, #6610f2);
+      color: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(13,110,253,.35);
+      animation: float 4s ease-in-out infinite;
     }
 
-    .hero h1,
-    .hero p {
-      position: relative;
-      z-index: 1;
-      animation: fadeInUp 1s ease;
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ---------- REVEAL ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
+    /* ---------- CARDS ---------- */
     .card {
-      border-radius: 10px;
-      transition: transform 0.3s;
+      border-radius: 16px;
+      transition: transform .3s, box-shadow .3s;
     }
-
     .card:hover {
-      transform: scale(1.02);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px rgba(0,0,0,.15);
     }
 
+    /* ---------- BUTTON EFFECT ---------- */
     .btn {
       border-radius: 30px;
-      padding: 10px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,.25);
+      top: 0;
+      left: -100%;
+      transition: .4s;
+    }
+    .btn:hover::after {
+      left: 0;
     }
 
     footer {
-      font-size: 14px;
-    }
-
-    .fade-in {
-      animation: fadeInUp 0.6s ease;
+      background: #111;
+      color: white;
+      padding: 15px;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark">
   <div class="container-fluid">
-    <span class="navbar-brand fw-bold">Educational Agent</span>
+    <span class="navbar-brand fw-bold">🎓 Educational Agent</span>
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- HERO -->
 <div class="hero">
-  <h1 class="fw-bold">🎓 Your Learning Companion</h1>
-  <p>Manage courses, track progress, and get smart recommendations instantly</p>
+  <h1 class="fw-bold"><span id="typed"></span></h1>
+  <p class="fs-5">Smart learning, progress tracking & recommendations</p>
 </div>
 
-<!-- Main Content -->
+<!-- STATS -->
+<div class="container my-5">
+  <div class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="card stat-card reveal">
+        <div class="card-body">
+          <i class="bi bi-book fs-1"></i>
+          <h5>Total Courses</h5>
+          <p id="courseCount" class="fs-2 fw-bold">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card stat-card reveal">
+        <div class="card-body">
+          <i class="bi bi-people fs-1"></i>
+          <h5>Total Students</h5>
+          <p id="studentCount" class="fs-2 fw-bold">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card stat-card reveal">
+        <div class="card-body">
+          <i class="bi bi-graph-up fs-1"></i>
+          <h5>Avg Progress</h5>
+          <p id="avgProgress" class="fs-2 fw-bold">0%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="container my-5">
 
-  <!-- Add Course -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <i class="bi bi-book"></i> Add Course
-    </div>
+  <!-- COURSE -->
+  <div class="card reveal mb-4">
+    <div class="card-header fw-bold"><i class="bi bi-book"></i> Add Course</div>
     <div class="card-body">
-      <input type="text" id="courseName" class="form-control mb-2" placeholder="Course Name">
-      <input type="number" id="courseDuration" class="form-control mb-2" placeholder="Duration (days)">
+      <input id="courseName" class="form-control mb-2" placeholder="Course Name">
+      <input id="courseDuration" class="form-control mb-2" type="number" placeholder="Duration (days)">
       <button class="btn btn-primary" onclick="addCourse()">Add Course</button>
-      <button class="btn btn-secondary ms-2" onclick="viewCourses()">View Courses</button>
       <div id="coursesList" class="mt-3"></div>
     </div>
   </div>
 
-  <!-- Add Student -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <i class="bi bi-person-plus"></i> Add Student
-    </div>
+  <!-- STUDENT -->
+  <div class="card reveal mb-4">
+    <div class="card-header fw-bold"><i class="bi bi-person-plus"></i> Add Student</div>
     <div class="card-body">
-      <input type="text" id="studentName" class="form-control mb-2" placeholder="Student Name">
-      <input type="number" id="studentProgress" class="form-control mb-2" placeholder="Progress %">
+      <input id="studentName" class="form-control mb-2" placeholder="Student Name">
+      <input id="studentProgress" class="form-control mb-2" type="number" placeholder="Progress %">
       <button class="btn btn-success" onclick="addStudent()">Add Student</button>
-      <button class="btn btn-secondary ms-2" onclick="viewStudents()">View Students</button>
       <div id="studentsList" class="mt-3"></div>
     </div>
   </div>
 
-  <!-- Recommendation -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <i class="bi bi-lightbulb"></i> Get Recommendation
-    </div>
+  <!-- RECOMMEND -->
+  <div class="card reveal mb-4">
+    <div class="card-header fw-bold"><i class="bi bi-lightbulb"></i> Recommendation</div>
     <div class="card-body">
-      <input type="text" id="recommendName" class="form-control mb-2" placeholder="Student Name">
+      <input id="recommendName" class="form-control mb-2" placeholder="Student Name">
       <button class="btn btn-info" onclick="getRecommendation()">Get Recommendation</button>
     </div>
   </div>
@@ -129,112 +183,93 @@
   <div id="result"></div>
 </div>
 
-<!-- Footer -->
-<footer class="bg-dark text-white text-center p-3">
+<footer>
   Made with ❤️ by Keerthi | Hackathon Project
 </footer>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- SCRIPT -->
 <script>
+  new Typed("#typed", {
+    strings: ["Your Learning Companion", "Hackathon Ready", "Smart Education Platform"],
+    typeSpeed: 60,
+    backSpeed: 40,
+    loop: true
+  });
+
   const BASE_URL = "https://edu-agent-nzfp.onrender.com";
 
-  function showLoading(target = "result") {
-    document.getElementById(target).innerHTML = `
-      <div class="text-center">
-        <div class="spinner-border text-primary"></div>
-        <p class="mt-2">Loading...</p>
-      </div>
-    `;
-  }
-
-  function showResult(title, message, type) {
-    document.getElementById("result").innerHTML = `
-      <div class="card border-${type} shadow-sm fade-in">
-        <div class="card-header bg-${type} text-white">${title}</div>
-        <div class="card-body">
-          <p>${message}</p>
-        </div>
-      </div>
-    `;
-  }
-
-  async function addCourse() {
-    const name = courseName.value.trim();
-    const duration = courseDuration.value;
-
-    if (!name || !duration) {
-      showResult("Error", "Please fill all course fields", "danger");
-      return;
-    }
-
-    showLoading();
-    const res = await fetch(`${BASE_URL}/add_course?name=${name}&duration=${duration}`);
-    const data = await res.json();
-    showResult("Course Added", JSON.stringify(data), "primary");
-  }
-
-  async function addStudent() {
-    const name = studentName.value.trim();
-    const progress = studentProgress.value;
-
-    if (!name || progress < 0 || progress > 100) {
-      showResult("Error", "Enter valid student data", "danger");
-      return;
-    }
-
-    showLoading();
-    const res = await fetch(`${BASE_URL}/add_student?name=${name}&progress=${progress}`);
-    const data = await res.json();
-    showResult("Student Added", JSON.stringify(data), "success");
-  }
-
-  async function getRecommendation() {
-    const name = recommendName.value.trim();
-    if (!name) return;
-
-    showLoading();
-    const res = await fetch(`${BASE_URL}/recommend/${name}`);
-    const data = await res.json();
-
-    if (data.recommendation)
-      showResult("Recommendation", data.recommendation, "info");
-    else
-      showResult("Error", data.error, "danger");
+  function animateCount(id, target, suffix="") {
+    let count = 0;
+    const step = Math.ceil(target / 30);
+    const el = document.getElementById(id);
+    const interval = setInterval(() => {
+      count += step;
+      if (count >= target) {
+        el.innerText = target + suffix;
+        clearInterval(interval);
+      } else {
+        el.innerText = count + suffix;
+      }
+    }, 20);
   }
 
   async function viewCourses() {
-    showLoading("coursesList");
     const res = await fetch(`${BASE_URL}/courses`);
     const data = await res.json();
-
-    let html = "<ul class='list-group fade-in'>";
-    data.forEach(c => {
-      html += `<li class="list-group-item">${c.name} - ${c.duration} days</li>`;
-    });
-    html += "</ul>";
-
-    coursesList.innerHTML = html;
+    animateCount("courseCount", data.length);
+    coursesList.innerHTML = data.map(c =>
+      `<div class="alert alert-light">${c.name} – ${c.duration} days</div>`
+    ).join("");
   }
 
   async function viewStudents() {
-    showLoading("studentsList");
     const res = await fetch(`${BASE_URL}/students`);
     const data = await res.json();
+    animateCount("studentCount", data.length);
+    const avg = data.reduce((a,b)=>a+b.progress,0)/(data.length||1);
+    animateCount("avgProgress", Math.round(avg), "%");
 
-    let html = "<ul class='list-group fade-in'>";
-    data.forEach(s => {
-      html += `<li class="list-group-item">${s.name} - ${s.progress}%</li>`;
-    });
-    html += "</ul>";
-
-    studentsList.innerHTML = html;
+    studentsList.innerHTML = data.map(s =>
+      `<div class="mb-2">
+        <strong>${s.name}</strong>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:${s.progress}%">${s.progress}%</div>
+        </div>
+      </div>`
+    ).join("");
   }
+
+  async function addCourse() {
+    await fetch(`${BASE_URL}/add_course?name=${courseName.value}&duration=${courseDuration.value}`);
+    viewCourses();
+  }
+
+  async function addStudent() {
+    await fetch(`${BASE_URL}/add_student?name=${studentName.value}&progress=${studentProgress.value}`);
+    viewStudents();
+  }
+
+  async function getRecommendation() {
+    const res = await fetch(`${BASE_URL}/recommend/${recommendName.value}`);
+    const data = await res.json();
+    result.innerHTML = `<div class="alert alert-info">💡 ${data.recommendation}</div>`;
+  }
+
+  window.addEventListener("scroll", () => {
+    document.querySelectorAll(".reveal").forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+        el.classList.add("active");
+      }
+    });
+  });
 </script>
 
 </body>
 </html>
+
+
+
+
 
 
 
