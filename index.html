@@ -20,6 +20,7 @@
     .btn { border-radius: 30px; padding: 10px 20px; transition: all 0.3s; }
     .btn:hover { transform: translateY(-2px); }
     footer { font-size: 14px; }
+    .fade-in { animation: fadeInUp 0.8s ease; }
   </style>
 </head>
 <body>
@@ -36,6 +37,7 @@
   </div>
 
   <div class="container my-5">
+    <!-- Add Course -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header"><i class="bi bi-book"></i> Add Course</div>
       <div class="card-body">
@@ -47,6 +49,7 @@
       </div>
     </div>
 
+    <!-- Add Student -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header"><i class="bi bi-person-plus"></i> Add Student</div>
       <div class="card-body">
@@ -58,6 +61,7 @@
       </div>
     </div>
 
+    <!-- Get Recommendation -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header"><i class="bi bi-lightbulb"></i> Get Recommendation</div>
       <div class="card-body">
@@ -88,6 +92,17 @@
       `;
     }
 
+    function showResult(title, message, type) {
+      document.getElementById("result").innerHTML = `
+        <div class="card border-${type} shadow-sm fade-in">
+          <div class="card-header bg-${type} text-white">${title}</div>
+          <div class="card-body">
+            <p class="card-text">${message}</p>
+          </div>
+        </div>
+      `;
+    }
+
     async function addCourse() {
       showLoading();
       const name = document.getElementById("courseName").value;
@@ -100,3 +115,55 @@
     async function addStudent() {
       showLoading();
       const name = document.getElementById("studentName").value;
+      const progress = document.getElementById("studentProgress").value;
+      const res = await fetch(`${BASE_URL}/add_student?name=${name}&progress=${progress}`);
+      const data = await res.json();
+      showResult("Student Added", JSON.stringify(data), "success");
+    }
+
+    async function getRecommendation() {
+      showLoading();
+      const name = document.getElementById("recommendName").value;
+      const res = await fetch(`${BASE_URL}/recommend/${name}`);
+      const data = await res.json();
+      if (data.recommendation) {
+        showResult("Recommendation", data.recommendation, "info");
+      } else {
+        showResult("Error", data.error || "Something went wrong", "danger");
+      }
+    }
+
+    async function viewCourses() {
+      showLoading("coursesList");
+      const res = await fetch(`${BASE_URL}/courses`);
+      const data = await res.json();
+      if (data.length === 0) {
+        document.getElementById("coursesList").innerHTML = "<p>No courses found.</p>";
+        return;
+      }
+      let html = "<h5>All Courses</h5><ul class='list-group fade-in'>";
+      data.forEach(c => {
+        html += `<li class='list-group-item'>${c.name} - ${c.duration} days</li>`;
+      });
+      html += "</ul>";
+      document.getElementById("coursesList").innerHTML = html;
+    }
+
+    async function viewStudents() {
+      showLoading("studentsList");
+      const res = await fetch(`${BASE_URL}/students`);
+      const data = await res.json();
+      if (data.length === 0) {
+        document.getElementById("studentsList").innerHTML = "<p>No students found.</p>";
+        return;
+      }
+      let html = "<h5>All Students</h5><ul class='list-group fade-in'>";
+      data.forEach(s => {
+        html += `<li class='list-group-item'>${s.name} - Progress: ${s.progress}%</li>`;
+      });
+      html += "</ul>";
+      document.getElementById("studentsList").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
