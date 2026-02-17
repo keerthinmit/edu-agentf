@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Educational Agent</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    input, button { margin: 5px; padding: 8px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Educational Agent</h1>
+
+  <h3>Add Course</h3>
+  <input type="text" id="courseName" placeholder="Course Name">
+  <input type="number" id="courseDuration" placeholder="Duration">
+  <button onclick="addCourse()">Add Course</button>
+
+  <h3>Add Student</h3>
+  <input type="text" id="studentName" placeholder="Student Name">
+  <input type="number" id="studentProgress" placeholder="Progress %">
+  <button onclick="addStudent()">Add Student</button>
+
+  <h3>Get Recommendation</h3>
+  <input type="text" id="recommendName" placeholder="Student Name">
+  <button onclick="getRecommendation()">Get Recommendation</button>
+
+  <div id="result"></div>
+
+  <script>
+    // Point frontend to your Render backend
+    const BASE_URL = "https://edu-agent-nzfp.onrender.com";
+
+    async function addCourse() {
+      const name = document.getElementById("courseName").value;
+      const duration = document.getElementById("courseDuration").value;
+      const res = await fetch(`${BASE_URL}/add_course?name=${name}&duration=${duration}`);
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data);
+    }
+
+    async function addStudent() {
+      const name = document.getElementById("studentName").value;
+      const progress = document.getElementById("studentProgress").value;
+      const res = await fetch(`${BASE_URL}/add_student?name=${name}&progress=${progress}`);
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data);
+    }
+
+    async function getRecommendation() {
+      const name = document.getElementById("recommendName").value;
+      const res = await fetch(`${BASE_URL}/recommend/${name}`);
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data);
+    }
+  </script>
+</body>
+</html>
