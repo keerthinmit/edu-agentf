@@ -16,39 +16,46 @@
       background-color: #f8f9fa;
     }
 
-    /* Hero Section with Background Image */
-    .hero-image {
+    /* Navbar */
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+
+    /* Hero Section */
+    .hero {
       background: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
       position: relative;
       color: white;
       text-align: center;
-      padding: 100px 20px;
+      padding: 120px 20px;
     }
-    .hero-image::before {
+    .hero::before {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5); /* dark overlay */
+      background: rgba(0,0,0,0.6);
     }
-    .hero-image h1, .hero-image p {
+    .hero h1, .hero p {
       position: relative;
       z-index: 1;
     }
 
-    /* Custom Buttons */
-    .btn-primary {
-      background-color: #2575fc;
-      border: none;
+    /* Cards */
+    .card {
+      border-radius: 10px;
     }
-    .btn-success {
-      background-color: #28a745;
-      border: none;
-    }
-    .btn-info {
-      background-color: #6a11cb;
-      border: none;
+    .card-header {
+      font-weight: 600;
     }
 
+    /* Buttons */
+    .btn {
+      border-radius: 30px;
+      padding: 10px 20px;
+    }
+
+    /* Footer */
     footer {
       font-size: 14px;
     }
@@ -59,17 +66,25 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">Educational Agent</a>
+      <a class="navbar-brand" href="#">Educational Agent</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Courses</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Students</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Recommendations</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section with Background Image -->
-  <div class="hero-image">
+  <!-- Hero Section -->
+  <div class="hero">
     <h1 class="fw-bold">🎓 Your Learning Companion</h1>
     <p>Manage courses, track progress, and get smart recommendations instantly</p>
   </div>
 
-  <div class="container">
+  <div class="container my-5">
     <!-- Add Course -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header"><i class="bi bi-book"></i> Add Course</div>
