@@ -1,74 +1,90 @@
+/* General */
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   color: #fff;
-  padding-top: 70px;
+  margin-top: 70px;
 }
 
+/* Navbar */
 .navbar {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
 }
 
+/* Hero Section */
 .hero {
-  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 50px;
+  padding: 80px 10%;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: #fff;
 }
-
 .hero img {
-  width: 420px;
-  animation: float 3s ease-in-out infinite;
+  width: 300px;
+  animation: float 4s ease-in-out infinite;
 }
-
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0); }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }
 
-.card {
-  background: rgba(255,255,255,0.08);
-  border: none;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0,198,255,0.6);
-}
-
-.btn-custom {
-  background: linear-gradient(45deg,#00c6ff,#0072ff);
-  color: white;
-  border-radius: 30px;
-  transition: background 0.3s ease;
-}
-
-.btn-custom:hover {
-  background: linear-gradient(45deg,#0072ff,#00c6ff);
-}
-
+/* Sections */
 .section {
-  padding: 60px 20px;
+  padding: 60px 10%;
 }
 
-.glowing-input {
-  border: 2px solid #00c6ff;
-  border-radius: 30px;
-  padding: 10px;
-  background: rgba(255,255,255,0.1);
+/* Cards */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
   color: #fff;
 }
 
-.glowing-input:focus {
-  outline: none;
-  box-shadow: 0 0 15px #00c6ff;
+/* Buttons */
+.btn-custom {
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+.btn-custom:hover {
+  transform: scale(1.05);
 }
 
-footer {
-  background: rgba(0,0,0,0.4);
+/* Inputs */
+.glowing-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #fff;
+  color: #fff;
+}
+.glowing-input:focus {
+  border-color: #ff6a00;
+  box-shadow: 0 0 10px #ff6a00;
+}
+
+/* Chat Box */
+.chat-box {
+  height: 250px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 8px;
+}
+.chat-message {
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 6px;
+}
+.chat-user {
+  background: rgba(255, 255, 255, 0.2);
+  text-align: right;
+}
+.chat-ai {
+  background: rgba(0, 255, 127, 0.2);
+  text-align: left;
 }

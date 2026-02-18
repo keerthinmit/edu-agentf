@@ -1,120 +1,98 @@
-const BACKEND_URL = "https://edu-agent-nzfp.onrender.com";
+// Backend base URL
+const BASE_URL = "https://edu-agent-1-dkgp.onrender.com";
 
-function showLogin() {
-  new bootstrap.Modal(document.getElementById("loginModal")).show();
-}
+// --- Courses ---
+function addCourse() {
+  const name = document.getElementById("courseName").value;
+  const duration = document.getElementById("courseDuration").value;
+  if (!name || !duration) return alert("Enter course details!");
 
-function scrollToApp() {
-  document.getElementById("app").scrollIntoView({ behavior: "smooth" });
-}
+  const li = document.createElement("li");
+  li.className = "list-group-item bg-transparent text-white";
+  li.textContent = `${name} - ${duration} days`;
+  document.getElementById("courseList").appendChild(li);
 
-// --- COURSE FUNCTIONS ---
-async function addCourse() {
-  const name = document.getElementById("courseName").value.trim();
-  const duration = document.getElementById("courseDuration").value.trim();
-  if (!name || !duration) {
-    alert("Please enter course name and duration!");
-    return;
-  }
-  await fetch(`${BACKEND_URL}/add_course?name=${name}&duration=${duration}`);
   document.getElementById("courseName").value = "";
   document.getElementById("courseDuration").value = "";
-  loadCourses();
 }
 
-async function loadCourses() {
-  const res = await fetch(`${BACKEND_URL}/courses`);
-  const data = await res.json();
-  const courseList = document.getElementById("courseList");
-  courseList.innerHTML = data.map(
-    c => `<li class="list-group-item bg-transparent text-light">
-            <i class="bi bi-book"></i> ${c.name} 
-            <span class="text-info">(${c.duration} days)</span>
-          </li>`
-  ).join("");
-}
+// --- Students ---
+let studentData = [];
+function addStudent() {
+  const name = document.getElementById("studentName").value;
+  const progress = document.getElementById("studentProgress").value;
+  if (!name || !progress) return alert("Enter student details!");
 
-// --- STUDENT FUNCTIONS ---
-async function addStudent() {
-  const name = document.getElementById("studentName").value.trim();
-  const progress = document.getElementById("studentProgress").value.trim();
-  if (!name || !progress) {
-    alert("Please enter student name and progress!");
-    return;
-  }
-  await fetch(`${BACKEND_URL}/add_student?name=${name}&progress=${progress}`);
+  studentData.push({ name, progress: parseInt(progress) });
+
+  const li = document.createElement("li");
+  li.className = "list-group-item bg-transparent text-white";
+  li.textContent = `${name} - ${progress}% progress`;
+  document.getElementById("studentList").appendChild(li);
+
+  updateChart();
   document.getElementById("studentName").value = "";
   document.getElementById("studentProgress").value = "";
-  loadStudents();
 }
 
-async function loadStudents() {
-  const res = await fetch(`${BACKEND_URL}/students`);
-  const data = await res.json();
-  const studentList = document.getElementById("studentList");
-  studentList.innerHTML = data.map(
-    s => `<li class="list-group-item bg-transparent text-light">
-            <i class="bi bi-person-circle"></i> ${s.name}
-            <div class="progress mt-2" style="height: 10px;">
-              <div class="progress-bar bg-info" role="progressbar" 
-                   style="width: ${s.progress}%;" 
-                   aria-valuenow="${s.progress}" aria-valuemin="0" aria-valuemax="100">
-              </div>
-            </div>
-            <small class="text-warning">${s.progress}%</small>
-          </li>`
-  ).join("");
-  renderChart(data);
-}
-
-// --- CHART ---
+// --- Chart.js ---
 let chart;
-function renderChart(data) {
-  if (chart) chart.destroy();
-
-  // Create gradient for bars
+function updateChart() {
   const ctx = document.getElementById("progressChart").getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, "#00c6ff");
-  gradient.addColorStop(1, "#0072ff");
-
+  if (chart) chart.destroy();
   chart = new Chart(ctx, {
-    type: 'bar',
+    type: "bar",
     data: {
-      labels: data.map(s => s.name),
+      labels: studentData.map(s => s.name),
       datasets: [{
-        label: "Progress %",
-        data: data.map(s => s.progress),
-        backgroundColor: gradient
+        label: "Progress (%)",
+        data: studentData.map(s => s.progress),
+        backgroundColor: "rgba(255, 99, 132, 0.6)"
       }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { color: "#fff" } }
-      },
-      scales: {
-        x: { ticks: { color: "#fff" } },
-        y: { ticks: { color: "#fff" } }
-      }
     }
   });
 }
 
-// --- SEARCH FILTER ---
-function filterLists() {
-  const query = document.getElementById("searchBox").value.toLowerCase();
-  const courseItems = document.querySelectorAll("#courseList li");
-  const studentItems = document.querySelectorAll("#studentList li");
+// --- AI Assistant ---
+async function askAI() {
+  const query = document.getElementById("chatInput").value;
+  if (!query) return;
 
-  courseItems.forEach(item => {
-    item.style.display = item.textContent.toLowerCase().includes(query) ? "" : "none";
-  });
-  studentItems.forEach(item => {
-    item.style.display = item.textContent.toLowerCase().includes(query) ? "" : "none";
-  });
+  addMessage(query, "user");
+  document.getElementById("chatInput").value = "";
+
+  try {
+    const res = await fetch(`${BASE_URL}/ask_ai?query=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    addMessage(data.answer, "ai");
+  } catch (err) {
+    addMessage("Error contacting AI assistant.", "ai");
+  }
 }
 
-// --- INITIAL LOAD ---
-loadCourses();
-loadStudents();
+function addMessage(text, sender) {
+  const div = document.createElement("div");
+  div.className = `chat-message chat-${sender}`;
+  div.textContent = text;
+  document.getElementById("chatBox").appendChild(div);
+  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+}
+
+// --- Recommendations ---
+async function getRecommendations(name, progress) {
+  try {
+    const res = await fetch(`${BASE_URL}/recommend_courses?student_name=${encodeURIComponent(name)}&progress=${progress}`);
+    const data = await res.json();
+    alert(`Recommendations for ${name}:\n${data.recommendations}`);
+  } catch (err) {
+    alert("Error fetching recommendations.");
+  }
+}
+
+// --- Helpers ---
+function scrollToApp() {
+  document.getElementById("app").scrollIntoView({ behavior: "smooth" });
+}
+function showLogin() {
+  alert("Login feature coming soon!");
+}

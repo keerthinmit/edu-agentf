@@ -2,135 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EduAgent – Smart Learning Platform</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Bootstrap -->
+  <title>EduAgent - AI Learning Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Animate on Scroll -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold">
-      <i class="bi bi-mortarboard"></i> EduAgent
-    </a>
-    <button class="btn btn-custom" onclick="showLogin()">Login</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<header class="hero container">
-  <div data-aos="fade-right">
-    <h1 class="fw-bold">AI Powered<br>Educational Agent</h1>
-    <p class="mt-3">
-      Personalized learning • Smart recommendations • Progress analytics
-    </p>
-    <button class="btn btn-custom mt-3" onclick="scrollToApp()">Get Started</button>
-  </div>
-  <img src="https://illustrations.popsy.co/blue/student.svg" alt="Student Illustration" data-aos="fade-left">
-</header>
-
-<!-- LOGIN MODAL -->
-<div class="modal fade" id="loginModal">
-  <div class="modal-dialog">
-    <div class="modal-content text-dark">
-      <div class="modal-header">
-        <h5>Login</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <input class="form-control mb-2" placeholder="Username">
-        <input class="form-control mb-2" placeholder="Password" type="password">
-        <button class="btn btn-custom w-100" data-bs-dismiss="modal">Login</button>
-        <small class="text-muted d-block mt-2 text-center">
-          Demo login (frontend only)
-        </small>
-      </div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">EduAgent</a>
+      <button class="btn btn-custom ms-auto" onclick="showLogin()">Login</button>
     </div>
-  </div>
-</div>
+  </nav>
 
-<!-- MAIN APP -->
-<div id="app" class="section container">
-  <div class="row g-4">
-    <!-- ADD COURSE -->
-    <div class="col-md-4" data-aos="zoom-in">
-      <div class="card p-4">
-        <h5><i class="bi bi-book-fill"></i> Add Course</h5>
-        <input id="courseName" class="form-control mb-2" placeholder="Course Name">
-        <input id="courseDuration" class="form-control mb-2" type="number" placeholder="Duration (days)">
-        <button class="btn btn-custom w-100" onclick="addCourse()">Add Course</button>
-      </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <h1 class="fw-bold">Your AI Learning Companion</h1>
+      <p class="lead">Manage courses, track progress, and get AI-powered recommendations.</p>
+      <button class="btn btn-custom" onclick="scrollToApp()">Get Started</button>
     </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Hero Image">
+  </section>
 
-    <!-- ADD STUDENT -->
-    <div class="col-md-4" data-aos="zoom-in">
-      <div class="card p-4">
-        <h5><i class="bi bi-person-plus-fill"></i> Add Student</h5>
-        <input id="studentName" class="form-control mb-2" placeholder="Student Name">
-        <input id="studentProgress" class="form-control mb-2" type="number" placeholder="Progress %">
-        <button class="btn btn-custom w-100" onclick="addStudent()">Add Student</button>
+  <!-- App Section -->
+  <section id="app" class="section">
+    <div class="container">
+      <div class="row">
+        <!-- Courses -->
+        <div class="col-md-6">
+          <div class="card p-3 mb-4">
+            <h3 class="text-info"><i class="bi bi-book"></i> Courses</h3>
+            <input id="courseName" class="form-control glowing-input mb-2" placeholder="Course Name">
+            <input id="courseDuration" class="form-control glowing-input mb-2" placeholder="Duration (days)">
+            <button class="btn btn-custom mb-3" onclick="addCourse()">Add Course</button>
+            <ul id="courseList" class="list-group"></ul>
+          </div>
+        </div>
+
+        <!-- Students -->
+        <div class="col-md-6">
+          <div class="card p-3 mb-4">
+            <h3 class="text-warning"><i class="bi bi-people"></i> Students</h3>
+            <input id="studentName" class="form-control glowing-input mb-2" placeholder="Student Name">
+            <input id="studentProgress" class="form-control glowing-input mb-2" placeholder="Progress (%)">
+            <button class="btn btn-custom mb-3" onclick="addStudent()">Add Student</button>
+            <ul id="studentList" class="list-group"></ul>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- CHART -->
-    <div class="col-md-4" data-aos="zoom-in">
-      <div class="card p-4">
-        <h5><i class="bi bi-bar-chart-fill"></i> Student Progress</h5>
+      <!-- Chart -->
+      <div class="card p-3 mb-4">
+        <h3 class="text-light"><i class="bi bi-bar-chart"></i> Progress Chart</h3>
         <canvas id="progressChart"></canvas>
       </div>
-    </div>
-  </div>
 
-  <!-- SEARCH -->
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <input id="searchBox" class="form-control glowing-input" placeholder="Search courses or students..." onkeyup="filterLists()">
-    </div>
-  </div>
-
-  <!-- LISTS -->
-  <div class="row g-4 mt-4">
-    <div class="col-md-6" data-aos="fade-up">
-      <div class="card p-4">
-        <h5><i class="bi bi-journal-text"></i> Course List</h5>
-        <ul id="courseList"></ul>
+      <!-- AI Assistant -->
+      <div class="card p-3 mb-4">
+        <h3 class="text-success"><i class="bi bi-robot"></i> AI Assistant</h3>
+        <div id="chatBox" class="chat-box mb-3"></div>
+        <div class="input-group">
+          <input id="chatInput" class="form-control glowing-input" placeholder="Ask EduAgent anything...">
+          <button class="btn btn-custom" onclick="askAI()">Send</button>
+        </div>
       </div>
     </div>
-    <div class="col-md-6" data-aos="fade-up">
-      <div class="card p-4">
-        <h5><i class="bi bi-people-fill"></i> Student List</h5>
-        <ul id="studentList"></ul>
-      </div>
-    </div>
-  </div>
-</div>
+  </section>
 
-<!-- FOOTER -->
-<footer class="text-center p-3 mt-5">
-  <p>&copy; 2026 EduAgent. All rights reserved.</p>
-  <div>
-    <i class="bi bi-facebook mx-2"></i>
-    <i class="bi bi-twitter mx-2"></i>
-    <i class="bi bi-linkedin mx-2"></i>
-  </div>
-</footer>
+  <!-- Footer -->
+  <footer class="text-center p-3 mt-5">
+    <p>&copy; 2026 EduAgent. Built with ❤️ for learners.</p>
+  </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-<script src="script.js"></script>
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
