@@ -54,8 +54,14 @@ async function loadStudents() {
   const studentList = document.getElementById("studentList");
   studentList.innerHTML = data.map(
     s => `<li class="list-group-item bg-transparent text-light">
-            <i class="bi bi-person-circle"></i> ${s.name} – 
-            <b class="text-warning">${s.progress}%</b>
+            <i class="bi bi-person-circle"></i> ${s.name}
+            <div class="progress mt-2" style="height: 10px;">
+              <div class="progress-bar bg-info" role="progressbar" 
+                   style="width: ${s.progress}%;" 
+                   aria-valuenow="${s.progress}" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
+            <small class="text-warning">${s.progress}%</small>
           </li>`
   ).join("");
   renderChart(data);
@@ -65,16 +71,21 @@ async function loadStudents() {
 let chart;
 function renderChart(data) {
   if (chart) chart.destroy();
-  chart = new Chart(document.getElementById("progressChart"), {
+
+  // Create gradient for bars
+  const ctx = document.getElementById("progressChart").getContext("2d");
+  const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+  gradient.addColorStop(0, "#00c6ff");
+  gradient.addColorStop(1, "#0072ff");
+
+  chart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: data.map(s => s.name),
       datasets: [{
         label: "Progress %",
         data: data.map(s => s.progress),
-        backgroundColor: [
-          "#00c6ff", "#0072ff", "#50c9c3", "#f5af19", "#ff512f"
-        ]
+        backgroundColor: gradient
       }]
     },
     options: {

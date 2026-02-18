@@ -33,21 +33,40 @@ body {
   border: none;
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0,198,255,0.6);
 }
 
 .btn-custom {
   background: linear-gradient(45deg,#00c6ff,#0072ff);
   color: white;
   border-radius: 30px;
+  transition: background 0.3s ease;
+}
+
+.btn-custom:hover {
+  background: linear-gradient(45deg,#0072ff,#00c6ff);
 }
 
 .section {
   padding: 60px 20px;
+}
+
+.glowing-input {
+  border: 2px solid #00c6ff;
+  border-radius: 30px;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.glowing-input:focus {
+  outline: none;
+  box-shadow: 0 0 15px #00c6ff;
 }
 
 footer {

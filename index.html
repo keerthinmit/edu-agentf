@@ -11,6 +11,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Animate on Scroll -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -28,14 +30,14 @@
 
 <!-- HERO -->
 <header class="hero container">
-  <div>
+  <div data-aos="fade-right">
     <h1 class="fw-bold">AI Powered<br>Educational Agent</h1>
     <p class="mt-3">
       Personalized learning • Smart recommendations • Progress analytics
     </p>
     <button class="btn btn-custom mt-3" onclick="scrollToApp()">Get Started</button>
   </div>
-  <img src="https://illustrations.popsy.co/blue/student.svg" alt="Student Illustration">
+  <img src="https://illustrations.popsy.co/blue/student.svg" alt="Student Illustration" data-aos="fade-left">
 </header>
 
 <!-- LOGIN MODAL -->
@@ -62,7 +64,7 @@
 <div id="app" class="section container">
   <div class="row g-4">
     <!-- ADD COURSE -->
-    <div class="col-md-4">
+    <div class="col-md-4" data-aos="zoom-in">
       <div class="card p-4">
         <h5><i class="bi bi-book-fill"></i> Add Course</h5>
         <input id="courseName" class="form-control mb-2" placeholder="Course Name">
@@ -72,7 +74,7 @@
     </div>
 
     <!-- ADD STUDENT -->
-    <div class="col-md-4">
+    <div class="col-md-4" data-aos="zoom-in">
       <div class="card p-4">
         <h5><i class="bi bi-person-plus-fill"></i> Add Student</h5>
         <input id="studentName" class="form-control mb-2" placeholder="Student Name">
@@ -82,7 +84,7 @@
     </div>
 
     <!-- CHART -->
-    <div class="col-md-4">
+    <div class="col-md-4" data-aos="zoom-in">
       <div class="card p-4">
         <h5><i class="bi bi-bar-chart-fill"></i> Student Progress</h5>
         <canvas id="progressChart"></canvas>
@@ -93,19 +95,19 @@
   <!-- SEARCH -->
   <div class="row mt-4">
     <div class="col-md-12">
-      <input id="searchBox" class="form-control" placeholder="Search courses or students..." onkeyup="filterLists()">
+      <input id="searchBox" class="form-control glowing-input" placeholder="Search courses or students..." onkeyup="filterLists()">
     </div>
   </div>
 
   <!-- LISTS -->
   <div class="row g-4 mt-4">
-    <div class="col-md-6">
+    <div class="col-md-6" data-aos="fade-up">
       <div class="card p-4">
         <h5><i class="bi bi-journal-text"></i> Course List</h5>
         <ul id="courseList"></ul>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" data-aos="fade-up">
       <div class="card p-4">
         <h5><i class="bi bi-people-fill"></i> Student List</h5>
         <ul id="studentList"></ul>
@@ -125,6 +127,10 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 <script src="script.js"></script>
 </body>
 </html>
