@@ -1,287 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Educational Agent</title>
+  <meta charset="UTF-8" />
+  <title>Educational Agent</title>
 
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- Typed -->
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <!-- Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 
-<style>
-body{
-  font-family:'Poppins',sans-serif;
-  background:#f4f6fb;
-}
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6fb;
+    }
 
-/* HERO */
-.hero{
-  background:
-  linear-gradient(135deg,rgba(0,0,0,.7),rgba(13,110,253,.6)),
-  url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f');
-  background-size:cover;
-  color:white;
-  padding:120px 20px;
-  text-align:center;
-}
+    /* HERO */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1600&q=80') center/cover;
+      color: white;
+      padding: 120px 20px;
+      position: relative;
+      text-align: center;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,51,153,0.6));
+    }
+    .hero * { position: relative; z-index: 1; }
 
-/* STAT CARDS */
-.stat-card{
-  background:linear-gradient(135deg,#0d6efd,#6610f2);
-  color:white;
-  border-radius:16px;
-  box-shadow:0 15px 35px rgba(13,110,253,.35);
-  animation:float 4s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
+    /* DASHBOARD CARDS */
+    .stat-card {
+      background: linear-gradient(135deg, #4e73df, #224abe);
+      color: white;
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-5px); }
 
-/* CARDS */
-.card{
-  border-radius:16px;
-  transition:.3s;
-}
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 15px 30px rgba(0,0,0,.15);
-}
+    .stat-card i { font-size: 30px; }
 
-/* ICON BUTTONS */
-.icon-btn{
-  background:white;
-  border-radius:50%;
-  width:50px;
-  height:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 8px 20px rgba(0,0,0,.15);
-  cursor:pointer;
-  transition:.3s;
-}
-.icon-btn:hover{
-  background:#0d6efd;
-  color:white;
-  transform:scale(1.1);
-}
+    /* GENERAL CARDS */
+    .card {
+      border-radius: 15px;
+      animation: fadeUp 0.6s ease;
+    }
 
-/* REVEAL */
-.reveal{
-  opacity:0;
-  transform:translateY(40px);
-  transition:.8s;
-}
-.reveal.active{
-  opacity:1;
-  transform:none;
-}
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-/* IMAGE */
-.section-img{
-  width:100%;
-  max-height:220px;
-  object-fit:cover;
-  border-radius:12px;
-}
+    /* CHAT */
+    .chat-box {
+      background: #f1f3f8;
+      border-radius: 10px;
+      padding: 15px;
+    }
 
-footer{
-  background:#111;
-  color:white;
-  padding:15px;
-  text-align:center;
-}
-</style>
+    footer {
+      font-size: 14px;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- NAV -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark">
-<div class="container-fluid">
-<span class="navbar-brand fw-bold">🎓 Educational Agent</span>
-</div>
+  <div class="container-fluid">
+    <span class="navbar-brand fw-bold">🎓 Educational Agent</span>
+  </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-<h1 class="fw-bold"><span id="typed"></span></h1>
-<p class="fs-5">Smart learning • Tracking • Recommendations</p>
+  <h1 class="fw-bold"><span id="typed"></span></h1>
+  <p>Smart learning management with AI-powered insights</p>
 </div>
 
 <!-- DASHBOARD -->
-<div class="container my-5">
-<div class="row text-center g-4">
-<div class="col-md-4">
-<div class="card stat-card reveal">
-<div class="card-body">
-<i class="bi bi-book fs-1"></i>
-<h5>Total Courses</h5>
-<p id="courseCount" class="fs-2 fw-bold">0</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card stat-card reveal">
-<div class="card-body">
-<i class="bi bi-people fs-1"></i>
-<h5>Total Students</h5>
-<p id="studentCount" class="fs-2 fw-bold">0</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card stat-card reveal">
-<div class="card-body">
-<i class="bi bi-graph-up fs-1"></i>
-<h5>Avg Progress</h5>
-<p id="avgProgress" class="fs-2 fw-bold">0%</p>
-</div>
-</div>
-</div>
-</div>
+<div class="container my-4">
+  <div class="row g-3 text-center">
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-book"></i>
+        <h5 class="mt-2">Courses</h5>
+        <h2 id="courseCount">0</h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-people"></i>
+        <h5 class="mt-2">Students</h5>
+        <h2 id="studentCount">0</h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-graph-up"></i>
+        <h5 class="mt-2">Avg Progress</h5>
+        <h2 id="avgProgress">0%</h2>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- MAIN -->
 <div class="container my-5">
 
-<!-- COURSES -->
-<div class="card reveal mb-4">
-<img src="https://images.unsplash.com/photo-1513258496099-48168024aec0" class="section-img">
-<div class="card-body">
-<div class="d-flex justify-content-between align-items-center">
-<h5><i class="bi bi-book"></i> Courses</h5>
-<div class="icon-btn" onclick="toggleCourses()" title="View Courses">
-<i class="bi bi-list"></i>
-</div>
+  <!-- ADD COURSE -->
+  <div class="card mb-4 shadow">
+    <div class="card-header fw-bold"><i class="bi bi-book"></i> Add Course</div>
+    <div class="card-body">
+      <input id="courseName" class="form-control mb-2" placeholder="Course Name">
+      <input id="courseDuration" type="number" class="form-control mb-2" placeholder="Duration (days)">
+      <button class="btn btn-primary" onclick="addCourse()">Add Course</button>
+      <button class="btn btn-secondary ms-2" onclick="viewCourses()">View Courses</button>
+      <div id="coursesList" class="mt-3"></div>
+    </div>
+  </div>
+
+  <!-- ADD STUDENT -->
+  <div class="card mb-4 shadow">
+    <div class="card-header fw-bold"><i class="bi bi-person-plus"></i> Add Student</div>
+    <div class="card-body">
+      <input id="studentName" class="form-control mb-2" placeholder="Student Name">
+      <input id="studentProgress" type="number" class="form-control mb-2" placeholder="Progress %">
+      <button class="btn btn-success" onclick="addStudent()">Add Student</button>
+      <button class="btn btn-secondary ms-2" onclick="viewStudents()">View Students</button>
+      <div id="studentsList" class="mt-3"></div>
+    </div>
+  </div>
+
+  <!-- AI RECOMMENDATION -->
+  <div class="card mb-4 shadow">
+    <div class="card-header fw-bold"><i class="bi bi-lightbulb"></i> AI Recommendation</div>
+    <div class="card-body">
+      <input id="recommendName" class="form-control mb-2" placeholder="Student Name">
+      <button class="btn btn-info" onclick="getRecommendation()">Get Recommendation</button>
+    </div>
+  </div>
+
+  <!-- AI CHAT -->
+  <div class="card shadow">
+    <div class="card-header fw-bold"><i class="bi bi-chat-dots"></i> AI Assistant</div>
+    <div class="card-body">
+      <input id="chatInput" class="form-control mb-2" placeholder="Ask something...">
+      <button class="btn btn-dark" onclick="askAI()">Ask AI</button>
+      <div id="chatResponse" class="chat-box mt-3"></div>
+    </div>
+  </div>
+
+  <div id="result" class="mt-4"></div>
 </div>
 
-<input id="courseName" class="form-control my-2" placeholder="Course Name">
-<input id="courseDuration" type="number" class="form-control mb-2" placeholder="Duration (days)">
-<button class="btn btn-primary" onclick="addCourse()">Add Course</button>
-
-<div id="coursesList" class="mt-3 d-none"></div>
-</div>
-</div>
-
-<!-- STUDENTS -->
-<div class="card reveal mb-4">
-<img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b" class="section-img">
-<div class="card-body">
-<div class="d-flex justify-content-between align-items-center">
-<h5><i class="bi bi-person-plus"></i> Students</h5>
-<div class="icon-btn" onclick="toggleStudents()" title="View Students">
-<i class="bi bi-people"></i>
-</div>
-</div>
-
-<input id="studentName" class="form-control my-2" placeholder="Student Name">
-<input id="studentProgress" type="number" class="form-control mb-2" placeholder="Progress %">
-<button class="btn btn-success" onclick="addStudent()">Add Student</button>
-
-<div id="studentsList" class="mt-3 d-none"></div>
-</div>
-</div>
-
-<!-- RECOMMEND -->
-<div class="card reveal">
-<img src="https://images.unsplash.com/photo-1581090700227-1e37b190418e" class="section-img">
-<div class="card-body">
-<h5><i class="bi bi-lightbulb"></i> Recommendation</h5>
-<input id="recommendName" class="form-control mb-2" placeholder="Student Name">
-<button class="btn btn-info" onclick="getRecommendation()">Get Recommendation</button>
-<div id="result" class="mt-3"></div>
-</div>
-</div>
-
-</div>
-
-<footer>
-Made with ❤️ by Keerthi | Hackathon Project
+<footer class="bg-dark text-white text-center p-3">
+  Made with ❤️ by Keerthi | Hackathon Project
 </footer>
 
 <script>
-new Typed("#typed",{
-strings:["Your Learning Companion","Professional EdTech Platform","Hackathon Ready UI"],
-typeSpeed:60,backSpeed:40,loop:true
-});
+  new Typed("#typed", {
+    strings: ["Your Smart Learning Companion", "AI-Powered Education", "Hackathon Ready Platform"],
+    typeSpeed: 60,
+    backSpeed: 40,
+    loop: true
+  });
 
-const BASE_URL="https://edu-agent-nzfp.onrender.com";
+  const BASE_URL = "https://edu-agent-nzfp.onrender.com";
 
-function animateCount(id,target,suffix=""){
-let c=0,step=Math.ceil(target/30);
-let el=document.getElementById(id);
-let i=setInterval(()=>{
-c+=step;
-if(c>=target){el.innerText=target+suffix;clearInterval(i);}
-else el.innerText=c+suffix;
-},20);
-}
+  let courses = [];
+  let students = [];
 
-function toggleCourses(){
-coursesList.classList.toggle("d-none");
-viewCourses();
-}
-function toggleStudents(){
-studentsList.classList.toggle("d-none");
-viewStudents();
-}
+  function updateDashboard() {
+    document.getElementById("courseCount").innerText = courses.length;
+    document.getElementById("studentCount").innerText = students.length;
+    const avg = students.length
+      ? Math.round(students.reduce((a,b)=>a+b.progress,0)/students.length)
+      : 0;
+    document.getElementById("avgProgress").innerText = avg + "%";
+  }
 
-async function viewCourses(){
-const r=await fetch(`${BASE_URL}/courses`);
-const d=await r.json();
-animateCount("courseCount",d.length);
-coursesList.innerHTML=d.length?
-d.map(c=>`<div class="alert alert-light">${c.name} – ${c.duration} days</div>`).join("")
-:`<p class="text-muted text-center">No courses yet 📘</p>`;
-}
+  async function addCourse() {
+    const name = courseName.value;
+    const duration = courseDuration.value;
+    if (!name || !duration) return alert("Fill all fields");
+    await fetch(`${BASE_URL}/add_course?name=${name}&duration=${duration}`);
+    courses.push({ name, duration });
+    updateDashboard();
+    viewCourses();
+  }
 
-async function viewStudents(){
-const r=await fetch(`${BASE_URL}/students`);
-const d=await r.json();
-animateCount("studentCount",d.length);
-let avg=d.reduce((a,b)=>a+b.progress,0)/(d.length||1);
-animateCount("avgProgress",Math.round(avg),"%");
+  function viewCourses() {
+    coursesList.innerHTML = courses.map(c =>
+      `<div class="alert alert-primary">📘 ${c.name} – ${c.duration} days</div>`
+    ).join("");
+  }
 
-studentsList.innerHTML=d.length?
-d.map(s=>`
-<div class="mb-2">
-<strong>${s.name}</strong>
-<div class="progress">
-<div class="progress-bar progress-bar-striped progress-bar-animated" style="width:${s.progress}%">${s.progress}%</div>
-</div>
-</div>`).join("")
-:`<p class="text-muted text-center">No students yet 👩‍🎓</p>`;
-}
+  async function addStudent() {
+    const name = studentName.value;
+    const progress = Number(studentProgress.value);
+    if (!name) return alert("Enter name");
+    await fetch(`${BASE_URL}/add_student?name=${name}&progress=${progress}`);
+    students.push({ name, progress });
+    updateDashboard();
+    viewStudents();
+  }
 
-async function addCourse(){
-await fetch(`${BASE_URL}/add_course?name=${courseName.value}&duration=${courseDuration.value}`);
-viewCourses();
-}
-async function addStudent(){
-await fetch(`${BASE_URL}/add_student?name=${studentName.value}&progress=${studentProgress.value}`);
-viewStudents();
-}
-async function getRecommendation(){
-const r=await fetch(`${BASE_URL}/recommend/${recommendName.value}`);
-const d=await r.json();
-result.innerHTML=`<div class="alert alert-info">💡 ${d.recommendation}</div>`;
-}
+  function viewStudents() {
+    studentsList.innerHTML = students.map(s =>
+      `<div class="alert alert-success">👤 ${s.name} – ${s.progress}%</div>`
+    ).join("");
+  }
 
-window.addEventListener("scroll",()=>{
-document.querySelectorAll(".reveal").forEach(e=>{
-if(e.getBoundingClientRect().top<innerHeight-100)e.classList.add("active");
-});
-});
+  function getRecommendation() {
+    const name = recommendName.value;
+    const s = students.find(x => x.name.toLowerCase() === name.toLowerCase());
+    if (!s) return alert("Student not found");
+    alert(
+      s.progress < 40 ? "📌 Beginner courses recommended" :
+      s.progress < 70 ? "📌 Intermediate courses recommended" :
+      "🚀 Advanced specialization recommended"
+    );
+  }
+
+  function askAI() {
+    const q = chatInput.value.toLowerCase();
+    let reply = "🤖 I'm here to help!";
+    if (q.includes("course")) reply = `📚 Total courses: ${courses.length}`;
+    if (q.includes("student")) reply = `👥 Total students: ${students.length}`;
+    if (q.includes("recommend")) reply = "✨ Try checking student progress for recommendations";
+    chatResponse.innerHTML = `<div><strong>AI:</strong> ${reply}</div>`;
+  }
 </script>
 
 </body>
